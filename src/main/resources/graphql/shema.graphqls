@@ -1,5 +1,5 @@
 type Query{
-    getUserById(id:ID): User
+    getUserByGoogleId(googleId:ID): User
 }
 
 type User{

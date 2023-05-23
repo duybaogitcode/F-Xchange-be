@@ -1,12 +1,12 @@
 package com.safenet.fxchangebe.controllers;
 
 
+import com.safenet.fxchangebe.dto.UserDTO;
 import com.safenet.fxchangebe.entities.Information;
 import com.safenet.fxchangebe.entities.Role;
 import com.safenet.fxchangebe.entities.User;
 import com.safenet.fxchangebe.exceptions.UserException;
-import com.safenet.fxchangebe.services.UserSerives;
-import org.bson.types.ObjectId;
+import com.safenet.fxchangebe.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -21,31 +21,31 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserSerives userSerives;
+    private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userSerives.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable String id) {
-        return userSerives.getUser(id);
+    public ResponseEntity<User> getUser(@PathVariable String id) {
+        return ResponseEntity.ok(userService.getUser(id));
     }
 
     @GetMapping
-    public List<User> getUsers() {
-        return userSerives.getUsers();
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable String id, @RequestBody User user) {
-        return userSerives.updateUserInfo(id, user);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody User user) throws Exception {
+        return ResponseEntity.ok(userService.updateUserInfo(id, user));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable ObjectId id) {
-        userSerives.deleteUser(id);
+    public void deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
     }
 
     @ExceptionHandler
@@ -54,15 +54,17 @@ public class UserController {
     }
 
     @QueryMapping
-    public User getUserById(@Argument String id){
-        return getUser(id);
+    public User getUserById(@Argument String id) {
+        return userService.getUser(id);
     }
+
     @SchemaMapping
-    public Information information(User user){
+    public Information information(User user) {
         return user.getInformations();
     }
+
     @SchemaMapping
-    public Role role(User user){
+    public Role role(User user) {
         return user.getRole();
     }
 }

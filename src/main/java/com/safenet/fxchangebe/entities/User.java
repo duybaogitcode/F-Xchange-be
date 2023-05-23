@@ -1,6 +1,7 @@
 package com.safenet.fxchangebe.entities;
 
 
+import com.safenet.fxchangebe.dto.UserDTO;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
@@ -66,5 +67,15 @@ public class User {
         this.stuff = stuff;
         this.attendanceDates = attendanceDates;
         this.transactions = transactions;
+    }
+
+    public UserDTO toDTO() {
+        UserDTO dto = new UserDTO();
+        dto.setInformations(this.informations);
+        dto.setGoogleId(this.googleId);
+        dto.setRole(this.role);
+        dto.setPoint(this.point);
+        dto.setStatus(this.status);
+        return dto;
     }
 }
