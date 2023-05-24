@@ -10,6 +10,6 @@ public class MongoDBConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(new SimpleMongoClientDatabaseFactory("mongodb+srv://fxchange:fxchange@clusterfx.vdq1bqb.mongodb.net/FXchange1"));
+        return new MongoTemplate(new SimpleMongoClientDatabaseFactory("mongodb+srv://fxchange:fxchange@clusterfx.vdq1bqb.mongodb.net/FXchange"));
     }
 }

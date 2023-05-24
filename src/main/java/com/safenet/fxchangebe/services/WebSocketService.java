@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WebSocketService {
-    @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
     public void sendMessage(Object payload, String destination) {

@@ -43,7 +43,7 @@ public class AuthenticationController {
         if (idToken == null) throw new RuntimeException("Error in verify process");
 
         Payload payload = idToken.getPayload();
-        UserDTO existUser = userService.findUserByGoogleId(payload.getSubject());
+        User existUser = userService.findUserByGoogleId(payload.getSubject());
 
         // Get profile information from payload
         String googleId = payload.getSubject();
@@ -62,7 +62,7 @@ public class AuthenticationController {
             user.getInformations().setAvatarUrl(avatarUrl);
             user.setGoogleId(googleId);
 
-            existUser = userService.createUser(user);
+            existUser = userService.createUser(user).toEntity();
         } else {            //User already exist
             System.out.println(new Date());
         }
