@@ -35,17 +35,17 @@ public class UserService {
     }
 
     public UserDTO updateUserInfo(String googleId, User user) throws Exception {
-        User existingUser = userRepository.findByGoogleId(googleId).orElseThrow(() -> new UserException("User not found!"));
-        existingUser.setInformations(user.getInformations());
-        existingUser.setRole(user.getRole());
-        existingUser.setStatus(user.getStatus());
-        existingUser.setCreateAt(user.getCreateAt());
-        existingUser.setUpdateAt(user.getUpdateAt());
-        existingUser.setPoint(user.getPoint());
-        existingUser.setStuff(user.getStuff());
-        existingUser.setAttendanceDates(user.getAttendanceDates());
-        existingUser.setTransactions(user.getTransactions());
-        return userRepository.save(existingUser).toDTO();
+        User existUser = userRepository.findByGoogleId(googleId).orElseThrow(() -> new UserException("User not found!"));
+        existUser.setInformations(user.getInformations());
+        existUser.setRole(user.getRole());
+        existUser.setStatus(user.getStatus());
+        existUser.setCreateAt(user.getCreateAt());
+        existUser.setUpdateAt(user.getUpdateAt());
+        existUser.setPoint(user.getPoint());
+        existUser.setStuff(user.getStuff());
+        existUser.setAttendanceDates(user.getAttendanceDates());
+        existUser.setTransactions(user.getTransactions());
+        return userRepository.save(existUser).toDTO();
     }
 
     public void deleteUser(String googleId) {

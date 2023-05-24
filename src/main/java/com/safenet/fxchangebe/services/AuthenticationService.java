@@ -1,10 +1,8 @@
 package com.safenet.fxchangebe.services;
 
 import com.safenet.fxchangebe.config.JwtTokenProperties;
-import com.safenet.fxchangebe.exceptions.TokenException;
+import com.safenet.fxchangebe.exceptions.ExpiredJwtException;
 import io.jsonwebtoken.*;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +39,7 @@ public class AuthenticationService {
         return builder.compact();
     }
 
-    public String refreshToken(String refreshToken) {
+    public String refreshToken(String refreshToken) throws Exception{
         Claims claims = validateToken(refreshToken);
 
         String googleId = claims.getSubject();
@@ -51,7 +49,7 @@ public class AuthenticationService {
         return generateToken(googleId, fullname, role);
     }
 
-    public Claims validateToken(String token) {
+    public Claims validateToken(String token) throws Exception{
         Jws<Claims> claims = Jwts.parser()
                 .setSigningKey(properties.getSecret())
                 .parseClaimsJws(token);
@@ -59,13 +57,13 @@ public class AuthenticationService {
         // Check signature
         boolean isSignatureValid = !claims.getSignature().isEmpty();
         if (isSignatureValid) {
-            throw new TokenException("Token is not valid");
+            throw new SignatureException("Token is not valid");
         }
 
         // Check expiration
         boolean isExpired = claims.getBody().getExpiration().before(new Date());
         if (isExpired) {
-            throw new TokenException("Token has expired");
+            throw new ExpiredJwtException("Token has expired");
         }
 
         return claims.getBody();

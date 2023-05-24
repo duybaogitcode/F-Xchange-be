@@ -5,7 +5,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.safenet.fxchangebe.dto.TokenResponse;
 import com.safenet.fxchangebe.dto.UserDTO;
 import com.safenet.fxchangebe.entities.User;
 import com.safenet.fxchangebe.services.AuthenticationService;
@@ -14,10 +13,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class AuthenticationController {
 
 
     @GetMapping("/login")
-    public ResponseEntity<?> login(HttpServletResponse response, @RequestBody Map<String,Object> string) throws Exception {
+    public ResponseEntity<?> login(@RequestBody Map<String, Object> string) throws Exception {
         String idTokenString = (String) string.get("idToken");
         System.out.println(idTokenString);
         //verify id token with google
@@ -64,8 +64,6 @@ public class AuthenticationController {
 
             existUser = userService.createUser(user);
         } else {            //User already exist
-            //add attendance for day
-//            existUser.getAttendanceDates().add();
             System.out.println(new Date());
         }
         //generate access and refresh tokens
@@ -76,30 +74,43 @@ public class AuthenticationController {
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setMaxAge(60 * 30);
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setMaxAge(60 * 60 * 24 * 30); // 30 day
+        accessTokenCookie.setPath("/");
 
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", accessTokenCookie.toString());
 
-        return ResponseEntity.ok("Login success");
+        return ResponseEntity.ok()
+                .header("refreshToken", refreshToken)
+                .headers(headers)
+                .build();
     }
 
     @GetMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
-        String newToken = authService.refreshToken(refreshToken);
+    public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = request.getHeader("refreshToken");
+        try {
+            String newToken = authService.refreshToken(refreshToken);
 
-        Cookie accessTokenCookie = new Cookie("accessToken", newToken);
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setMaxAge(60 * 30);
-        response.addCookie(accessTokenCookie);
-
-        return ResponseEntity.ok(newToken);
+            Cookie accessTokenCookie = new Cookie("accessToken", newToken);
+            accessTokenCookie.setHttpOnly(true);
+            accessTokenCookie.setMaxAge(60 * 30);
+            response.addCookie(accessTokenCookie);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/logout")
-    public void logout() {
+    public ResponseEntity<Void> logout() {
+        Cookie jwtCookie = new Cookie("token", null);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0);
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", jwtCookie.toString());
+
+        return ResponseEntity.ok().headers(headers).build();
     }
 }
