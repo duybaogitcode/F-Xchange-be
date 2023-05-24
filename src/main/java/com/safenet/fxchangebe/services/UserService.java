@@ -42,9 +42,7 @@ public class UserService {
         existUser.setCreateAt(user.getCreateAt());
         existUser.setUpdateAt(user.getUpdateAt());
         existUser.setPoint(user.getPoint());
-        existUser.setStuff(user.getStuff());
         existUser.setAttendanceDates(user.getAttendanceDates());
-        existUser.setTransactions(user.getTransactions());
         return userRepository.save(existUser).toDTO();
     }
 
