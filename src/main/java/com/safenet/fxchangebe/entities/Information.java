@@ -2,13 +2,13 @@ package com.safenet.fxchangebe.entities;
 
 
 import lombok.Data;
-import org.springframework.data.mongodb.core.index.Indexed;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class Information {
 
     private String email;
@@ -22,14 +22,4 @@ public class Information {
     @Field("avatar_url")
     private String avatarUrl;
 
-    public Information() {
-    }
-
-    public Information(String email, String fullname, List<String> phone, List<String> address, String avatarUrl) {
-        this.email = email;
-        this.fullname = fullname;
-        this.phone = phone;
-        this.address = address;
-        this.avatarUrl = avatarUrl;
-    }
 }

@@ -2,6 +2,7 @@ package com.safenet.fxchangebe.entities;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "comments")
 public class Comment {
     @Id
@@ -19,7 +21,7 @@ public class Comment {
 
     private String content;
 
-    private Author author;
+    private User author;
 
     @Field("stuff_id")
     private ObjectId stuffId;
@@ -32,14 +34,4 @@ public class Comment {
     @Field("update_at")
     private Date updateAt;
 
-    public Comment() {
-    }
-
-    public Comment(String content, Author author, ObjectId stuffId, Date createAt, Date updateAt) {
-        this.content = content;
-        this.author = author;
-        this.stuffId = stuffId;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-    }
 }

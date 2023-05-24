@@ -3,6 +3,7 @@ package com.safenet.fxchangebe.entities;
 
 import com.safenet.fxchangebe.dto.UserDTO;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "users")
 public class User {
     @Id
@@ -45,29 +47,8 @@ public class User {
     @Field("update_at")
     private Date updateAt;
 
-    private List<ObjectId> stuff;
-
     @Field("attendance_dates")
     private List<Date> attendanceDates;
-
-    private List<ObjectId> transactions;
-
-    public User() {
-    }
-
-    public User(Information informations, String googleId, Role role, int point, String invitationCode, Status status, Date createAt, Date updateAt, List<ObjectId> stuff, List<Date> attendanceDates, List<ObjectId> transactions) {
-        this.informations = informations;
-        this.googleId = googleId;
-        this.role = role;
-        this.point = point;
-        this.invitationCode = invitationCode;
-        this.status = status;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-        this.stuff = stuff;
-        this.attendanceDates = attendanceDates;
-        this.transactions = transactions;
-    }
 
     public UserDTO toDTO() {
         UserDTO dto = new UserDTO();

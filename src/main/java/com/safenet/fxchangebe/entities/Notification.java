@@ -2,6 +2,7 @@ package com.safenet.fxchangebe.entities;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "notifications")
 public class Notification {
     @Id
@@ -31,15 +33,4 @@ public class Notification {
     @CreatedDate
     private Date time;
 
-    public Notification() {
-    }
-
-    public Notification(String content, NotiType type, ObjectId userId, ObjectId targetId, String url, Date time) {
-        this.content = content;
-        this.type = type;
-        this.userId = userId;
-        this.targetId = targetId;
-        this.url = url;
-        this.time = time;
-    }
 }

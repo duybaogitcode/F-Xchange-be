@@ -2,6 +2,7 @@ package com.safenet.fxchangebe.entities;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "stuff")
 public class Stuff {
 
@@ -26,7 +28,7 @@ public class Stuff {
 
     private List<String> images;
 
-    private Author author;
+    private User author;
 
     private int condition;
 
@@ -34,7 +36,7 @@ public class Stuff {
 
     private String type;
 
-    private List<TagValue> tags;
+    private Map<String,String> tags;
 
     private Status status;
 
@@ -49,24 +51,4 @@ public class Stuff {
     @Field("update_at")
     private Date updateAt;
 
-    private List<ObjectId> comments;
-
-    public Stuff() {
-    }
-
-    public Stuff(String title, String content, List<String> images, Author author, int condition, String category, String type, List<TagValue> tags, Status status, Map<String, Object> customField, Date createAt, Date updateAt, List<ObjectId> comments) {
-        this.title = title;
-        this.content = content;
-        this.images = images;
-        this.author = author;
-        this.condition = condition;
-        this.category = category;
-        this.type = type;
-        this.tags = tags;
-        this.status = status;
-        this.customField = customField;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-        this.comments = comments;
-    }
 }

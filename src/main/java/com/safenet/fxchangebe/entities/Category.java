@@ -1,11 +1,12 @@
 package com.safenet.fxchangebe.entities;
 
 import lombok.Data;
-import org.bson.types.ObjectId;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "categories")
 public class Category {
     @Id
@@ -13,10 +14,4 @@ public class Category {
 
     private String name;
 
-    public Category() {
-    }
-
-    public Category(String name) {
-        this.name = name;
-    }
 }

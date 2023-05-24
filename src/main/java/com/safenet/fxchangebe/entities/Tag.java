@@ -2,13 +2,14 @@ package com.safenet.fxchangebe.entities;
 
 
 import lombok.Data;
-import org.bson.types.ObjectId;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "tags")
 public class Tag {
     @Id
@@ -18,11 +19,4 @@ public class Tag {
 
     private List<String> value;
 
-    public Tag() {
-    }
-
-    public Tag(String name, List<String> value) {
-        this.name = name;
-        this.value = value;
-    }
 }

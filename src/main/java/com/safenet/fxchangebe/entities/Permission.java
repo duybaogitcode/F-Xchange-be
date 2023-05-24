@@ -2,6 +2,7 @@ package com.safenet.fxchangebe.entities;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "permissions")
 public class Permission {
     @Id
@@ -21,13 +23,4 @@ public class Permission {
 
     private List<String> write;
 
-    public Permission() {
-    }
-
-    public Permission(int id, String resourceUrl, List<String> read, List<String> write) {
-        this.id = id;
-        this.resourceUrl = resourceUrl;
-        this.read = read;
-        this.write = write;
-    }
 }
