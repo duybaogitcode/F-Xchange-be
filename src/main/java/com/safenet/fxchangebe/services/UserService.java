@@ -51,7 +51,7 @@ public class UserService {
         userRepository.deleteByGoogleId(googleId);
     }
 
-    public UserDTO findUserByGoogleId(String googleId)throws Exception{
-        return userRepository.findByGoogleId(googleId).isPresent()? userRepository.findByGoogleId(googleId).get().toDTO():null;
+    public User findUserByGoogleId(String googleId) throws Exception {
+        return userRepository.findByGoogleId(googleId).isPresent() ? userRepository.findByGoogleId(googleId).get() : null;
     }
 }

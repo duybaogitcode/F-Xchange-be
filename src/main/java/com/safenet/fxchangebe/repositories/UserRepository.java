@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, ObjectId> {
-    public Optional<User> findByGoogleId(String googleId);
-    public void deleteByGoogleId(String googleId);
+    Optional<User> findByGoogleId(String googleId);
+
+    void deleteByGoogleId(String googleId);
 }
