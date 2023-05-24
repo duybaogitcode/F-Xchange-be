@@ -36,7 +36,7 @@ public class Stuff {
 
     private String type;
 
-    private Map<String,String> tags;
+    private List<Map<String,String>> tags;
 
     private Status status;
 
